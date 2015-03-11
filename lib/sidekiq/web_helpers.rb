@@ -20,6 +20,22 @@ module Sidekiq
     def filtering(*)
     end
 
+    # This view helper provide ability display you html code in
+    # to head of page. Example:
+    #
+    #   <% add_to_head do %>
+    #     <link rel="stylesheet" .../>
+    #     <meta .../>
+    #   <% end %>
+    #
+    def add_to_head(&html)
+      @head_html = html if html
+    end
+
+    def display_custom_head
+      @head_html && @head_html.call
+    end
+
     def locale
       lang = (request.env["HTTP_ACCEPT_LANGUAGE"] || 'en').split(',')[0].downcase
       strings[lang] ? lang : 'en'
